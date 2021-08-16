@@ -70,15 +70,33 @@ def data():
 
 from threading import Thread
 
-def memory_task():
-    print('task')
-    time.sleep(5)
-    print('task end')
-    return 1
+def ram():
+    logger.info("Starting RAM task")
+    ['A'*1024 for _ in range(0, 1024*1024*1024)]
+    logger.info("RAM task completed")
 
-@app.route('/task')
-def task():
-    thread = Thread(target=memory_task)
+
+def cpu():
+    logger.info("Starting CPU task")
+    start_time = datetime.now()
+    now = datetime.now()
+    while (now - start_time).seconds < 30:
+        pass
+        now = datetime.now()
+    logger.info(" CPU task completed")
+
+@app.route('/cpu_task')
+def cpu_task():
+    thread = Thread(target=cpu)
+    thread.daemon = True
+    thread.start()
+    return jsonify({'thread_name': str(thread.name),
+                    'started': True})
+
+
+@app.route('/ram_task')
+def ram_task():
+    thread = Thread(target=ram)
     thread.daemon = True
     thread.start()
     return jsonify({'thread_name': str(thread.name),

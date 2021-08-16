@@ -10,6 +10,9 @@ services:
       options:
         fluentd-address: localhost:24224
         tag: monapp
+    cpus: 0.4
+    mem_limit: 1000m
+    restart: on-failure
     depends_on: 
       - fluentd
 
