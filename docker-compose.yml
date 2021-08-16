@@ -67,7 +67,6 @@ services:
     depends_on: 
       - elasticsearch
 
-      
   fluentd:
     build: ./fluentd
     ports:
@@ -78,3 +77,25 @@ services:
       - "./fluentd/fluentd.conf:/fluentd/etc/fluentd.conf"
     depends_on: 
       - elasticsearch
+
+  # cadvisor:
+  #   image: gcr.io/cadvisor/cadvisor:v0.37.5
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - "/:/rootfs:ro"
+  #     - "/var/run:/var/run:ro"
+  #     - "/sys:/sys:ro"
+  #     - "/var/lib/docker/:/var/lib/docker:ro"
+  #     - "/dev/disk/:/dev/disk:ro"
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+    - 8080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
