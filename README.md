@@ -3,7 +3,7 @@ PoC for monitoring python application with Prometheus and EFK
 
 # Ideas
 
-- Learning how to write python (Flask) applications with exporting Prometheus metrics
+- Learning how to write python (Flask) applications with Prometheus metrics exporting
 - Creating application which simulates some failures and warnings
 - Monitoring applications and containerized infrastructure with Prometheus
 - Collecting logs with EFK
