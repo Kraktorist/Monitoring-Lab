@@ -1,0 +1,80 @@
+version: "3.9"
+services:
+
+  monapp:
+    build: ./app
+    ports:
+      - "5000:5000"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: monapp
+    depends_on: 
+      - fluentd
+
+  prometheus:
+    image: prom/prometheus
+    ports: 
+      - "9090:9090"
+    volumes:
+      - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "./prometheus/rules:/etc/prometheus/rules"
+
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 9093:9093
+    volumes:
+      - "./alertmanager/:/etc/alertmanager/"
+    depends_on: 
+      - prometheus
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment: 
+      - "GF_INSTALL_PLUGINS=camptocamp-prometheus-alertmanager-datasource"
+    volumes:
+      - "./grafana/datasources:/etc/grafana/provisioning/datasources"
+      - "./grafana/dashboards:/etc/grafana/provisioning/dashboards"
+      - "./grafana/dashboards_files:/var/lib/grafana/dashboards"
+    depends_on: 
+      - prometheus
+      - alertmanager
+
+  elasticsearch:
+    image: elasticsearch:7.14.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment: 
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.14.0
+    ports:
+      - "5601:5601"
+    environment: 
+      - "ELASTICSEARCH_HOSTS=http://elasticsearch:9200"
+    depends_on: 
+      - elasticsearch
+
+      
+  fluentd:
+    build: ./fluentd
+    ports:
+      - "24224:24224"
+    environment: 
+      - "FLUENTD_CONF=fluentd.conf"
+    volumes:
+      - "./fluentd/fluentd.conf:/fluentd/etc/fluentd.conf"
+    depends_on: 
+      - elasticsearch
