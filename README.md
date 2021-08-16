@@ -1,7 +1,7 @@
 # Monitoring-Lab
 PoC for monitoring python application with Prometheus and EFK
 
-# The ideas
+# Ideas
 
 - Learning how to write python (Flask) applications with exporting Prometheus metrics
 - Monitoring applications and containerized infrastructure with Prometheus
@@ -41,13 +41,13 @@ monapp_position_in_stock{position="Corn"} 11.3835
 ```http://{IP}:5000/alert```
 ```MonApp``` can work as a web hook for your AlertManager. It will show requests from AlertManager amd print them in console in raw format.
 
-## Mock
+## Mocking
 
 There are two URIs for testing CPU and RAM load.
 
 ```http://{IP}:5000/cpu_task```
 This task will create a thread which will use as much CPU resources as possible during next 30 seconds.
-```http://{IP}:5000/cpu_task```
+```http://{IP}:5000/ram_task```
 This task will create a thread which will use as much RAM as possible until the application is killed by docker.
 
 
@@ -85,4 +85,8 @@ All the metrics are collected by ```Prometheus``` and exposed in ```Grafana```. 
 
 ## Infrastructure Monitoring
 
-For infrastructure monitoring ```cAdvisor``` container is added and configured.
+For infrastructure monitoring ```cAdvisor``` container is added and configured. All metrics from ```cAdvisor``` are collected by ```Prometheus`` and exposed in ```Grafana``` dashboards.
+
+# Mocking
+
+```MonApp``` has some mocking tools which can help you to test you monitoring infrastructure.
