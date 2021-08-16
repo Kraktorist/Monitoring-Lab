@@ -1,0 +1,20 @@
+groups:
+- name: warehouse_load
+  rules:
+  - alert: HighWarehouseVolume
+    expr: monapp_position_in_stock{job="monapp"}>20
+    # for: 1s
+    labels:
+      severity: critical
+    annotations:
+      description: 'Too much {{ $labels.position }} in the warehouse'
+      summary: High volume of {{ $labels.position }} in the warehouse
+
+  - alert: LowWarehouseVolume
+    expr: monapp_position_in_stock{job="monapp"}<10
+    # for: 1s
+    labels:
+      severity: critical
+    annotations:
+      description: 'Too few {{ $labels.position }} in the warehouse'
+      summary: Low volume of {{ $labels.position }} in the warehouse
