@@ -49,3 +49,14 @@ scrape_configs:
   static_configs:
   - targets:
     - monapp:5000
+
+- job_name: cadvisor
+  honor_timestamps: true
+  scrape_interval: 3s
+  scrape_timeout: 3s
+  metrics_path: /metrics
+  scheme: http
+  follow_redirects: true
+  static_configs:
+  - targets:
+    - cadvisor:5000
