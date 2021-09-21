@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import escape, Flask, request, jsonify
 from prometheus_flask_exporter import PrometheusMetrics
 from prometheus_client import Gauge
 import time
@@ -25,26 +25,40 @@ formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s',  date
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+def seconds_since_midnight():
+  now = datetime.now()
+  midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
+  return (now - midnight).seconds
 
-def get_data2():
-  return round(10+10*random()+cos(2*pi*datetime.now().second/60), 4)
-
-
-def get_data():
-  x = datetime.now().second
-  if datetime.now().minute % randint(2,7) == 0 & x in range(1,5):
-      y = x*x - 15
+def get_rice():
+  if app.grow['rice']:
+    app.rice = app.rice + 1
   else:
-      y = 10*random() + sin(2*pi*x/60)
-  return round(10+y ,4)
+    app.rice = app.rice - 1
+  if app.rice < 0: app.rice = 0 
+  return app.rice
+
+
+
+def get_corn():
+  if app.grow['corn']:
+    app.corn = app.corn + 2
+  else:
+    app.corn = app.corn - 4
+  if app.corn < 0: app.corn = 0
+  return app.corn
 
 
 app = Flask(__name__)
+# variable for changing graph
+app.grow = {'corn': True, 'rice': True}
+app.rice = 0
+app.corn = 0
 
 # Metrics
 temperature = Gauge('monapp_position_in_stock', 'Position in stock (1000 tons)', ['position'])
-temperature.labels('Rice').set_function(get_data)
-temperature.labels('Corn').set_function(get_data2)
+temperature.labels('Corn').set_function(get_corn)
+temperature.labels('Rice').set_function(get_rice)
 metrics = PrometheusMetrics(app, export_defaults=True)
 
 # static information as metric
@@ -52,31 +66,42 @@ metrics.info('app_info', 'Application info', version='1.0.3')
 
 @app.route('/')
 def main():
-    return 'main'
+  """Main page"""
+  result = "<h2>Available methods</h2> <br>"
+  for rule in app.url_map.iter_rules():
+    if rule.endpoint != 'static':
+      result += f'<a href="{rule.rule}"> { escape(rule.rule) } </a> {app.view_functions[rule.endpoint].__doc__} <br>'
+  return result
+
+@app.route('/switch/<grain>')
+def switch(grain):
+  """Order to start/stop loading grain"""
+  if grain in ['rice', 'corn']:
+    app.grow[grain] = not app.grow[grain]
+    return f'{grain} START!' if app.grow[grain] else f'{grain} STOP!'
+  else:
+    return 'grain is not specified'
 
 @app.route("/alert", methods=['POST'])
 def alert():
-    alert = request.get_json()
-    print(alert)
-    logger.fatal(f"{alert['commonAnnotations']['summary']}. Alert has been created")
-    return dumps({'success':True}), 200, {'ContentType':'application/json'} 
-    
+  """Creates an alert"""
+  alert = request.get_json()
+  print(alert)
+  logger.fatal(f"{alert['commonAnnotations']['summary']}. Alert has been created")
+  return dumps({'success':True}), 200, {'ContentType':'application/json'} 
 
-
-@app.route('/data')
-def data():
-    data = get_data()
-    return str(data)
 
 from threading import Thread
 
 def ram():
+    """RAM test"""
     logger.info("Starting RAM task")
     ['A'*1024 for _ in range(0, 1024*1024*1024)]
     logger.info("RAM task completed")
 
 
 def cpu():
+    """CPU test"""
     logger.info("Starting CPU task")
     start_time = datetime.now()
     now = datetime.now()
@@ -87,6 +112,7 @@ def cpu():
 
 @app.route('/cpu_task')
 def cpu_task():
+    """CPU test handler"""
     thread = Thread(target=cpu)
     thread.daemon = True
     thread.start()
@@ -96,6 +122,7 @@ def cpu_task():
 
 @app.route('/ram_task')
 def ram_task():
+    """RAM test handler"""
     thread = Thread(target=ram)
     thread.daemon = True
     thread.start()
@@ -104,6 +131,7 @@ def ram_task():
 
 
 def scheduled_action():
+    """Log messages generator"""
     chance = randint(0, 19)
     message = ' '.join(Gibberish().generate_words(wordcount=3, vowel_consonant_repeats=1))
     if chance in (18, 19):
