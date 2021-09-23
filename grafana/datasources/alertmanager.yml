@@ -40,6 +40,10 @@ datasources:
      graphiteVersion: "1.1"
      tlsAuth: false
      tlsAuthWithCACert: false
+     severity_critical: "4"
+     severity_high: "3"
+     severity_warning: "2"
+     severity_info: "1"
   # <string> json object of data that will be encrypted.
   secureJsonData:
     tlsCACert: "..."

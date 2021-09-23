@@ -344,7 +344,7 @@
           "$$hashKey": "object:1270",
           "alias": "",
           "align": "auto",
-          "colorMode": "row",
+          "colorMode": "cell",
           "colors": [
             "rgba(50, 172, 45, 0.97)",
             "rgba(237, 129, 40, 0.89)",
@@ -356,7 +356,7 @@
           "pattern": "severity",
           "thresholds": [
             "1",
-            "2"
+            "1"
           ],
           "type": "string",
           "unit": "short",
@@ -364,15 +364,20 @@
             {
               "$$hashKey": "object:1309",
               "text": "Critical",
-              "value": "3"
+              "value": "4"
             },
             {
               "$$hashKey": "object:1310",
+              "text": "High",
+              "value": "3"
+            },
+            {
+              "$$hashKey": "object:1311",
               "text": "Warning",
               "value": "2"
             },
             {
-              "$$hashKey": "object:1311",
+              "$$hashKey": "object:356",
               "text": "Info",
               "value": "1"
             }
@@ -438,5 +443,5 @@
   "timezone": "",
   "title": "MonApp",
   "uid": "zyQU5Hn7z",
-  "version": 2
+  "version": 1
 }
