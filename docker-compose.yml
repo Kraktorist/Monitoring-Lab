@@ -2,7 +2,7 @@ version: "3.9"
 services:
 
   monapp:
-    build: ./app
+    build: ./monapp
     ports:
       - "5000:5000"
     logging:
