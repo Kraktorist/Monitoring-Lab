@@ -28,29 +28,21 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 
 
-def seconds_since_midnight():
-    now = datetime.now()
-    midnight = now.replace(hour=0, minute=0, second=0, microsecond=0)
-    return (now - midnight).seconds
-
-
-def get_rice():
+def update_rice():
     if app.grow['rice']:
-        app.rice = app.rice + 1
+        app.rice = app.rice + randint(5, 15)/10
     else:
-        app.rice = app.rice - 1
-    if app.rice < 0:
-        app.rice = 0
+        app.rice = app.rice - randint(25, 35)/10
+    app.rice = max(app.rice, 0)
     return app.rice
 
 
-def get_corn():
+def update_corn():
     if app.grow['corn']:
-        app.corn = app.corn + 2
+        app.corn = app.corn + randint(15, 25)/10
     else:
-        app.corn = app.corn - 4
-    if app.corn < 0:
-        app.corn = 0
+        app.corn = app.corn - randint(35,45)/10
+    app.corn = max(app.corn, 0)
     return app.corn
 
 
@@ -63,8 +55,8 @@ app.corn = 0
 # Metrics
 temperature = Gauge('monapp_position_in_stock',
                     'Position in stock (1000 tons)', ['position'])
-temperature.labels('Corn').set_function(get_corn)
-temperature.labels('Rice').set_function(get_rice)
+temperature.labels('Corn').set_function(lambda: app.corn)
+temperature.labels('Rice').set_function(lambda: app.rice)
 metrics = PrometheusMetrics(app, export_defaults=True)
 
 # static information as metric
@@ -155,7 +147,7 @@ def ram_task():
                     'started': True})
 
 
-def scheduled_action():
+def log_message_generator():
     """Log messages generator"""
     chance = randint(0, 19)
     message = ' '.join(Gibberish().generate_words(
@@ -169,7 +161,9 @@ def scheduled_action():
 
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=scheduled_action, trigger="interval", seconds=10)
+scheduler.add_job(func=log_message_generator, trigger="interval", seconds=10)
+scheduler.add_job(func=update_rice, trigger="interval", seconds=5)
+scheduler.add_job(func=update_corn, trigger="interval", seconds=5)
 scheduler.start()
 
 # Shut down the scheduler when exiting the app

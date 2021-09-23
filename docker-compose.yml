@@ -34,7 +34,7 @@ services:
       - prometheus
 
   grafana:
-    image: grafana/grafana
+    image: grafana/grafana:7.0.4
     ports:
       - "3000:3000"
     environment: 

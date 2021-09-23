@@ -24,96 +24,99 @@
   "links": [],
   "panels": [
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": null,
       "description": "",
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "graph": false,
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "smooth",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "custom": {}
         },
         "overrides": []
       },
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 20,
         "x": 0,
         "y": 0
       },
-      "id": 4,
-      "interval": "1s",
-      "maxDataPoints": null,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "max",
-            "mean"
-          ],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
+      "hiddenSeries": false,
+      "id": 8,
+      "legend": {
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
       },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
-          "exemplar": false,
-          "expr": "monapp_position_in_stock{}",
-          "instant": false,
+          "expr": "monapp_position_in_stock",
           "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{position}}",
+          "legendFormat": "{{ position }}",
           "refId": "A"
         }
       ],
+      "thresholds": [],
       "timeFrom": null,
-      "title": "Position in stock (1000 tons)",
-      "type": "timeseries"
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Position in stock (tons)",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "datasource": null,
@@ -122,6 +125,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -162,7 +166,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "7.0.4",
       "targets": [
         {
           "exemplar": true,
@@ -186,6 +190,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -225,7 +230,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "7.0.4",
       "targets": [
         {
           "exemplar": true,
@@ -247,6 +252,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -286,7 +292,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "8.1.1",
+      "pluginVersion": "7.0.4",
       "targets": [
         {
           "exemplar": true,
@@ -299,10 +305,126 @@
       ],
       "title": "Max. in Stock",
       "type": "stat"
+    },
+    {
+      "columns": [],
+      "datasource": "Alertmanager",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
+      "fontSize": "100%",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 12,
+      "links": [],
+      "pageSize": null,
+      "scroll": true,
+      "showHeader": true,
+      "sort": {
+        "col": null,
+        "desc": false
+      },
+      "styles": [
+        {
+          "$$hashKey": "object:1269",
+          "alias": "Time",
+          "align": "auto",
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "pattern": "Time",
+          "type": "date"
+        },
+        {
+          "$$hashKey": "object:1270",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "row",
+          "colors": [
+            "rgba(50, 172, 45, 0.97)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(245, 54, 54, 0.9)"
+          ],
+          "dateFormat": "YYYY-MM-DD HH:mm:ss",
+          "decimals": 2,
+          "mappingType": 1,
+          "pattern": "severity",
+          "thresholds": [
+            "1",
+            "2"
+          ],
+          "type": "string",
+          "unit": "short",
+          "valueMaps": [
+            {
+              "$$hashKey": "object:1309",
+              "text": "Critical",
+              "value": "3"
+            },
+            {
+              "$$hashKey": "object:1310",
+              "text": "Warning",
+              "value": "2"
+            },
+            {
+              "$$hashKey": "object:1311",
+              "text": "Info",
+              "value": "1"
+            }
+          ]
+        },
+        {
+          "$$hashKey": "object:1271",
+          "alias": "",
+          "align": "auto",
+          "colorMode": "row",
+          "colors": [
+            "rgba(245, 54, 54, 0.9)",
+            "rgba(237, 129, 40, 0.89)",
+            "rgba(50, 172, 45, 0.97)"
+          ],
+          "decimals": 2,
+          "pattern": "/.*/",
+          "thresholds": [
+            "0"
+          ],
+          "type": "number",
+          "unit": "short"
+        }
+      ],
+      "targets": [
+        {
+          "annotations": true,
+          "expr": "",
+          "hide": false,
+          "labelSelector": "*",
+          "legendFormat": "{{ summary }}",
+          "refId": "A",
+          "target": "Query",
+          "type": "table"
+        },
+        {
+          "annotations": false,
+          "expr": "",
+          "labelSelector": "*",
+          "legendFormat": "{{ instance }}",
+          "refId": "B",
+          "target": "Query",
+          "type": "table"
+        }
+      ],
+      "title": "All Alerts Info",
+      "transform": "table",
+      "type": "table-old"
     }
   ],
   "refresh": "5s",
-  "schemaVersion": 30,
+  "schemaVersion": 25,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -316,5 +438,5 @@
   "timezone": "",
   "title": "MonApp",
   "uid": "zyQU5Hn7z",
-  "version": 1
+  "version": 2
 }
