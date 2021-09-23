@@ -7,4 +7,4 @@ route:
 receivers:
 - name: 'web.hook'
   webhook_configs:
-  - url: 'http://monapp:5000/alert'
+  - url: 'http://webhook:5001/alert'

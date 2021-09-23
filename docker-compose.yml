@@ -16,6 +16,13 @@ services:
     depends_on: 
       - fluentd
 
+  webhook:
+    build: ./webhook
+    ports:
+      - "5001:5001"
+    restart: on-failure
+
+
   prometheus:
     image: prom/prometheus
     ports: 
