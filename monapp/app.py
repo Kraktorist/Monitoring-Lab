@@ -48,7 +48,7 @@ def update_corn():
 
 app = Flask(__name__)
 # variable for changing graph
-app.grow = {'corn': True, 'rice': True}
+app.grow = {'corn': False, 'rice': False}
 app.rice = 0
 app.corn = 0
 
@@ -75,6 +75,8 @@ def main():
         Kibana <br>
         <a href="http://localhost:8080"> http://localhost:8080 </a> 
         cAdvisor <br>
+        <a href="http://localhost:15672"> http://localhost:15672 </a> 
+        RabbitMQ <br>        
         <a href="http://localhost:9200"> http://localhost:9200 </a> 
         Elasticsearch <br>
         <a href="http://localhost:9090"> http://localhost:9090 </a> 
@@ -91,14 +93,16 @@ def main():
     return result
 
 
-@app.route('/switch/<grain>')
-def switch(grain):
+@app.route('/switch/<grain>/<command>')
+def switch(grain, command):
     """Order to start/stop loading grain"""
-    if grain in ['rice', 'corn']:
-        app.grow[grain] = not app.grow[grain]
+    grain = grain.lower()
+    command = command.lower()
+    if grain in ['rice', 'corn'] and command in ['start', 'stop']:
+        app.grow[grain] = True if command == 'start' else False
         return f'{grain} START!' if app.grow[grain] else f'{grain} STOP!'
     else:
-        return 'grain is not specified'
+        return 'parameters are not specified'
 
 
 @app.route("/alert", methods=['POST'])

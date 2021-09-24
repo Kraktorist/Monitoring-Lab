@@ -23,7 +23,15 @@ services:
     ports:
       - "5001:5001"
     restart: on-failure
+    depends_on: 
+      - rabbitmq
 
+  worker:
+    container_name: worker
+    build: ./worker
+    restart: on-failure
+    depends_on: 
+      - rabbitmq
 
   prometheus:
     container_name: prometheus

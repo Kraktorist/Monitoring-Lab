@@ -2,7 +2,7 @@ groups:
 - name: warehouse_load
   rules:
   - alert: HighWarehouseVolume
-    expr: monapp_position_in_stock{job="monapp"}>85
+    expr: monapp_position_in_stock{job="monapp"}>65
     # for: 1s
     labels:
       severity: 4
@@ -11,7 +11,7 @@ groups:
       summary: High volume of {{ $labels.position }} in the warehouse
 
   - alert: LowWarehouseVolume
-    expr: monapp_position_in_stock{job="monapp"}<35
+    expr: monapp_position_in_stock{job="monapp"}<15
     # for: 1s
     labels:
       severity: 4
