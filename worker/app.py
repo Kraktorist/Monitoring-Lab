@@ -10,7 +10,7 @@ time.sleep(30)
 print(' [*] Connecting to server ...')
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq'))
 channel = connection.channel()
-channel.queue_declare(queue='task_queue', durable=True)
+channel.queue_declare(queue='monapp_alerts', durable=True)
 
 print(' [*] Waiting for messages.')
 
@@ -32,5 +32,5 @@ def callback(ch, method, properties, body):
 
 
 channel.basic_qos(prefetch_count=1)
-channel.basic_consume(queue='task_queue', on_message_callback=callback)
+channel.basic_consume(queue='monapp_alerts', on_message_callback=callback)
 channel.start_consuming()
